@@ -2,7 +2,18 @@ const _ = require('lodash')
 const { ObjectID, MongoClient } = require('mongodb')
 const mongoClient = MongoClient.connect('mongodb://localhost:27017/JsStackDemo')
 
-module.exports = {
+type dbType = {
+
+    upsert: (collection: string, body: any, id?: any) => {},
+
+    delete: (collection: string, query: any) => {},
+
+    getMany: (collection: string, query: any) => {},
+
+    getOne: (collection: string, id: any) => {}
+}
+
+export const db: dbType = {
 
     upsert: async (collection, body, id) => {
 
@@ -12,16 +23,16 @@ module.exports = {
 
         if (_.isEmpty(body)) {
 
-            throw new Error({ status: 400, message: 'body must not be empty' });
+            throw new Error('body must not be empty');
         }
 
         if (!ObjectID.isValid(id)) {
 
-            throw new Error({ status: 400, message: 'ObjectID is of incorrect format/type' });
+            throw new Error('ObjectID is of incorrect format/type');
         }
 
         const pingBack = await (await mongoClient).collection(collection).findOneAndUpdate(
- 
+
             { _id: id },
             { $set: body },
             { upsert: true, returnOriginal: false }
@@ -29,7 +40,7 @@ module.exports = {
 
         if (pingBack.lastErrorObject && pingBack.lastErrorObject.n === 0) {
 
-            throw new Error({ status: 404, message: "nothing was updated" });
+            throw new Error("nothing was updated");
         }
 
         return pingBack.value
@@ -40,17 +51,17 @@ module.exports = {
 
         if (_.isEmpty(query)) {
 
-            throw new Error({ status: 500, message: 'Body/query for deletion must not be empty' });
+            throw new Error('Body/query for deletion must not be empty');
         };
 
         const pingBack = await (await mongoClient).collection(collection)
 
         if (pingBack.result && pingBack.result.n === 0) {
 
-            throw new Error({ status: 404, message: 'Object to delete was not found' });
+            throw new Error('Object to delete was not found');
         }
 
-        return pingback
+        return pingBack
     },
 
     getMany: async (collection, query) => {
@@ -64,16 +75,16 @@ module.exports = {
 
         if (!ObjectID.isValid(id)) {
 
-            throw new Error({ status: 404, message: 'Invalid ObjectID' })
+            throw new Error('Invalid ObjectID')
         }
 
         var query = { _id: ObjectID(id) };
 
-        const result = await(await mongoClient).collection(collection).findOne(query)
+        const result = await (await mongoClient).collection(collection).findOne(query)
 
         if (!result) {
 
-            throw new Error({ status: 404, message: 'None found' });
+            throw new Error('None found');
         }
 
         return result;

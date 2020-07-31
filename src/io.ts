@@ -1,4 +1,5 @@
-const db = require('../_aux/db');
+// const db = require('../_aux/db');
+import { db } from './db'
 
 export default function (io: SocketIO.Server) {
 
@@ -33,7 +34,7 @@ export default function (io: SocketIO.Server) {
 
         socket.on('api-post', async packet => {
 
-            const pingback = await db.upsert(packet.collection, packet.body)
+            const pingback: any = await db.upsert(packet.collection, packet.body)
 
             if (pingback.department) {
 
@@ -63,7 +64,7 @@ export default function (io: SocketIO.Server) {
                 }
             }
 
-            const pingback = await db.upsert(packet.collection, packet.body, packet._id)
+            const pingback: any = await db.upsert(packet.collection, packet.body, packet._id)
 
             if (pingback.department) {
 

@@ -36,7 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var db = require('../_aux/db');
+// const db = require('../_aux/db');
+var db_1 = require("./db");
 function default_1(io) {
     // NOTE:
     // Refer to file, 'notes on socket.io.txt' for further info re socket commands
@@ -50,7 +51,7 @@ function default_1(io) {
                 switch (_a.label) {
                     case 0:
                         dept = message.department;
-                        return [4 /*yield*/, db.getMany("jobs", { department: dept })];
+                        return [4 /*yield*/, db_1.db.getMany("jobs", { department: dept })];
                     case 1:
                         response = _a.sent();
                         socket.leaveAll();
@@ -69,7 +70,7 @@ function default_1(io) {
             var pingback;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db.upsert(packet.collection, packet.body)];
+                    case 0: return [4 /*yield*/, db_1.db.upsert(packet.collection, packet.body)];
                     case 1:
                         pingback = _a.sent();
                         if (pingback.department) {
@@ -97,7 +98,7 @@ function default_1(io) {
                                 packet.body.department = nextDept[dept];
                             }
                         }
-                        return [4 /*yield*/, db.upsert(packet.collection, packet.body, packet._id)];
+                        return [4 /*yield*/, db_1.db.upsert(packet.collection, packet.body, packet._id)];
                     case 1:
                         pingback = _a.sent();
                         if (pingback.department) {
