@@ -1,6 +1,6 @@
 const db = require('../_aux/db');
 
-module.exports = function (io) {
+export default function (io: SocketIO.Server) {
 
     // NOTE:
     // Refer to file, 'notes on socket.io.txt' for further info re socket commands
@@ -44,11 +44,11 @@ module.exports = function (io) {
 
         socket.on('process-job', async packet => {
 
-            var dept = packet.body.department;
+            var dept: string = packet.body.department;
 
             if (dept) {
 
-                const jobSequence = [
+                const jobSequence: { [key: string]: string }[] = [
 
                     { "sales": "creative" },
                     { "creative": "production" },
