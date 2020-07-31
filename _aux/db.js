@@ -1,144 +1,80 @@
-const
-    _               = require('lodash'),
-    {ObjectID}      = require('mongodb'),
-    {mongoClient}   = require('../_aux/config');
+const _ = require('lodash')
+const { ObjectID } = require('mongodb')
+const { mongoClient } = require('../_aux/config')
 
-var db = (() => {
+module.exports = {
 
-    return {
+    upsert: async (collection, body, id) => {
 
-        upsert : (collection, body, id) => {
+        id = !id ? new ObjectID() : ObjectID(id);
 
-            id = !id ? new ObjectID() : ObjectID(id);
+        body = _.omit(body, ['_id']);
 
-            var promise = new Promise((resolve, reject) => {
+        if (_.isEmpty(body)) {
 
-                body = _.omit(body, ['_id']);
-
-                if(_.isEmpty(body)){
-
-                    return reject({status: 400, message: 'body must not be empty'});
-                }
-
-                if(!ObjectID.isValid(id)){
-
-                    return reject({status: 400, message: 'ObjectID is of incorrect format/type'});
-                }
-
-                mongoClient
-                    .then(db => {
-
-                        db  .collection(collection)
-                            .findOneAndUpdate(
-                                { _id: id },
-                                { $set:  body },
-                                { upsert: true, returnOriginal: false }
-                            )
-                            .then(pingBack => {
-
-                                if(pingBack.lastErrorObject && pingBack.lastErrorObject.n === 0) {
-
-                                    return reject({status: 404, message: "nothing was updated"});
-                                }
-
-                                resolve(pingBack.value);
-                            });
-
-                    })
-                    .catch(err => reject({status: 500, message: err}));
-
-            });
-
-            return promise;
-        },
-
-        delete : (collection, query) => {
-
-            var promise = new Promise((resolve, reject) => {
-
-                if(_.isEmpty(query)){
-
-                    return reject({status: 500, message: 'Body/query for deletion must not be empty'});
-                };
-
-                mongoClient
-                    .then(db => {
-
-                        db  .collection(collection)
-                            .remove(query)
-                            .then(pingBack => {
-
-                                if(pingBack.result && pingBack.result.n === 0) {
-
-                                    return reject({status: 404, message: 'Object to delete was not found'});
-                                }
-
-                                resolve(pingBack);
-                            });
-                    })
-                    .catch(err => reject({status: 500, message: err}));
-            });
-
-            return promise;
-        },
-
-        getMany: (collection, query) => {
-
-            var promise = new Promise((resolve, reject) => {
-
-                mongoClient
-                    .then(function(db){
-
-                        db  .collection(collection)
-                            .find(query)
-                            .toArray()
-                            .then(pingback => {
-
-                                resolve(pingback);
-                            });
-                    })
-                    .catch(err => reject({status: 500, message: err}));
-            });
-
-            return promise;
-        },
-
-        getOne: (collection, id) => {
-
-            var promise = new Promise((resolve, reject) => {
-
-                if(!ObjectID.isValid(id)) {
-
-                    return reject({status: 404, message: 'Invalid ObjectID'})
-                }
-
-                var query = {
-                    _id:   ObjectID(id)
-                };
-
-                mongoClient
-                    .then(db => {
-
-                        db  .collection(collection)
-                            .findOne(query)
-                            .then(result => {
-
-                                if(!result) {
-
-                                    return reject({status: 404, message: 'None found'});
-                                }
-
-                                resolve(result);
-                            });
-                    })
-                    .catch(err => reject({status: 500, message: err}));
-
-            });
-
-            return promise;
+            throw new Error({ status: 400, message: 'body must not be empty' });
         }
 
-    }
-})();
+        if (!ObjectID.isValid(id)) {
 
-module.exports = {db};
+            throw new Error({ status: 400, message: 'ObjectID is of incorrect format/type' });
+        }
+
+        const pingBack = await (await mongoClient).collection(collection).findOneAndUpdate(
+            { _id: id },
+            { $set: body },
+            { upsert: true, returnOriginal: false }
+        )
+
+        if (pingBack.lastErrorObject && pingBack.lastErrorObject.n === 0) {
+
+            throw new Error({ status: 404, message: "nothing was updated" });
+        }
+
+        return pingBack.value
+
+    },
+
+    delete: async (collection, query) => {
+
+        if (_.isEmpty(query)) {
+
+            throw new Error({ status: 500, message: 'Body/query for deletion must not be empty' });
+        };
+
+        const pingBack = await (await mongoClient).collection(collection)
+
+        if (pingBack.result && pingBack.result.n === 0) {
+
+            throw new Error({ status: 404, message: 'Object to delete was not found' });
+        }
+
+        return pingback
+    },
+
+    getMany: async (collection, query) => {
+
+        const pingback = await (await mongoClient).collection(collection).find(query).toArray()
+
+        return pingback
+    },
+
+    getOne: async (collection, id) => {
+
+        if (!ObjectID.isValid(id)) {
+
+            throw new Error({ status: 404, message: 'Invalid ObjectID' })
+        }
+
+        var query = { _id: ObjectID(id) };
+
+        const result = await(await mongoClient).collection(collection).findOne(query)
+
+        if (!result) {
+
+            throw new Error({ status: 404, message: 'None found' });
+        }
+
+        return result;
+    }
+}

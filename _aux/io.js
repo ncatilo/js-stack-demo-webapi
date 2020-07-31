@@ -1,5 +1,5 @@
 const
-    {db}    = require('../_aux/db'),
+    db    = require('../_aux/db'),
     url     = require('url'),
     cookie  = require('cookie');
 
