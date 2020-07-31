@@ -1,9 +1,6 @@
-const
-    db    = require('../_aux/db'),
-    url     = require('url'),
-    cookie  = require('cookie');
+const db = require('../_aux/db');
 
-module.exports = function(io) {
+module.exports = function (io) {
 
     // NOTE:
     // Refer to file, 'notes on socket.io.txt' for further info re socket commands
@@ -18,7 +15,7 @@ module.exports = function(io) {
 
             var dept = message.department;
 
-            db  .getMany("jobs", { department : dept })
+            db.getMany("jobs", { department: dept })
                 .then(response => {
 
                     socket.leaveAll();
@@ -28,7 +25,7 @@ module.exports = function(io) {
                     // send the jobs list belonging to dept to the caller
                     socket.emit('joined-dept', response);
 
-                    setTimeout(function() {
+                    setTimeout(function () {
 
                         // this sends the message only to other users within the user's own department, not the sending user
                         socket.broadcast.to(dept).emit('message-from-server', `${socket.id} joined ${dept}`);
@@ -38,10 +35,10 @@ module.exports = function(io) {
 
         socket.on('api-post', packet => {
 
-            db  .upsert(packet.collection, packet.body)
+            db.upsert(packet.collection, packet.body)
                 .then(pingback => {
 
-                    if(pingback.department) {
+                    if (pingback.department) {
 
                         // this sends the pingback to all users in this department, including the poster
                         io.in(pingback.department).emit('api-posted', pingback);
@@ -53,25 +50,25 @@ module.exports = function(io) {
 
             var dept = packet.body.department;
 
-            if(dept) {
+            if (dept) {
 
                 var jobSequence = [
-                        {"sales":"creative"},
-                        {"creative":"production"},
-                        {"production":"logistics"}
-                    ],
+                    { "sales": "creative" },
+                    { "creative": "production" },
+                    { "production": "logistics" }
+                ],
                     nextDept = jobSequence.filter(x => x[dept])[0];
 
-                if(nextDept) {
+                if (nextDept) {
 
                     packet.body.department = nextDept[dept];
                 }
             }
 
-            db  .upsert(packet.collection, packet.body, packet._id)
+            db.upsert(packet.collection, packet.body, packet._id)
                 .then(pingback => {
 
-                    if(pingback.department) {
+                    if (pingback.department) {
 
                         // Sending the pingback to all subscribers of 'job-processed' at the client-side
                         // Subscribers will process/disseminate the pingback themselves at their end

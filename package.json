@@ -11,15 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.17.0",
-    "express": "^4.15.0",
     "lodash": "^4.17.4",
     "mongodb": "^2.2.24",
     "socket.io": "^1.7.3"
   },
   "devDependencies": {
-    "expect": "^1.20.2",
-    "mocha": "^3.2.0",
-    "supertest": "^3.0.0"
+    "@types/node": "^14.0.27"
   }
 }
