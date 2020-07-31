@@ -1,6 +1,6 @@
 const _ = require('lodash')
-const { ObjectID } = require('mongodb')
-const { mongoClient } = require('../_aux/config')
+const { ObjectID, MongoClient } = require('mongodb')
+const mongoClient = MongoClient.connect('mongodb://localhost:27017/JsStackDemo')
 
 module.exports = {
 
@@ -21,6 +21,7 @@ module.exports = {
         }
 
         const pingBack = await (await mongoClient).collection(collection).findOneAndUpdate(
+ 
             { _id: id },
             { $set: body },
             { upsert: true, returnOriginal: false }
