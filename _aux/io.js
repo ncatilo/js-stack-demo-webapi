@@ -11,53 +11,51 @@ module.exports = function (io) {
 
         socket.broadcast.emit('message-from-server', `${socket.id} is connected`);
 
-        socket.on('join-dept', message => {
+        socket.on('join-dept', async message => {
 
             var dept = message.department;
 
-            db.getMany("jobs", { department: dept })
-                .then(response => {
+            const response = await db.getMany("jobs", { department: dept })
 
-                    socket.leaveAll();
+            socket.leaveAll();
 
-                    socket.join(dept);
+            socket.join(dept);
 
-                    // send the jobs list belonging to dept to the caller
-                    socket.emit('joined-dept', response);
+            // send the jobs list belonging to dept to the caller
+            socket.emit('joined-dept', response);
 
-                    setTimeout(function () {
+            setTimeout(function () {
 
-                        // this sends the message only to other users within the user's own department, not the sending user
-                        socket.broadcast.to(dept).emit('message-from-server', `${socket.id} joined ${dept}`);
-                    });
-                })
+                // this sends the message only to other users within the user's own department, not the sending user
+                socket.broadcast.to(dept).emit('message-from-server', `${socket.id} joined ${dept}`);
+            });
         });
 
-        socket.on('api-post', packet => {
+        socket.on('api-post', async packet => {
 
-            db.upsert(packet.collection, packet.body)
-                .then(pingback => {
+            const pingback = await db.upsert(packet.collection, packet.body)
 
-                    if (pingback.department) {
+            if (pingback.department) {
 
-                        // this sends the pingback to all users in this department, including the poster
-                        io.in(pingback.department).emit('api-posted', pingback);
-                    }
-                });
+                // this sends the pingback to all users in this department, including the poster
+                io.in(pingback.department).emit('api-posted', pingback);
+            }
         });
 
-        socket.on('process-job', packet => {
+        socket.on('process-job', async packet => {
 
             var dept = packet.body.department;
 
             if (dept) {
 
-                var jobSequence = [
+                const jobSequence = [
+
                     { "sales": "creative" },
                     { "creative": "production" },
                     { "production": "logistics" }
-                ],
-                    nextDept = jobSequence.filter(x => x[dept])[0];
+                ]
+
+                const nextDept = jobSequence.filter(x => x[dept])[0];
 
                 if (nextDept) {
 
@@ -65,16 +63,14 @@ module.exports = function (io) {
                 }
             }
 
-            db.upsert(packet.collection, packet.body, packet._id)
-                .then(pingback => {
+            const pingback = await db.upsert(packet.collection, packet.body, packet._id)
 
-                    if (pingback.department) {
+            if (pingback.department) {
 
-                        // Sending the pingback to all subscribers of 'job-processed' at the client-side
-                        // Subscribers will process/disseminate the pingback themselves at their end
-                        io.emit('job-processed', pingback);
-                    }
-                });
+                // Sending the pingback to all subscribers of 'job-processed' at the client-side
+                // Subscribers will process/disseminate the pingback themselves at their end
+                io.emit('job-processed', pingback);
+            }
         });
 
         socket.on('disconnect', () => {
