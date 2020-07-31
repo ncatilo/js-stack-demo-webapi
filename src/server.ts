@@ -3,9 +3,9 @@ const io = require('socket.io')(http)
 const port = 3000
 
 // require('../_aux/io')(io);
-import fn from './io'
+import SocketIOService from './SocketIOService'
 
-fn(io)
+SocketIOService(io)
 
 http.listen(port, () => {
 

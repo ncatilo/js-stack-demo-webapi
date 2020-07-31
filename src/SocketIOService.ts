@@ -1,5 +1,5 @@
 // const db = require('../_aux/db');
-import { db } from './db'
+import { db } from './DbService'
 
 export default function (io: SocketIO.Server) {
 
