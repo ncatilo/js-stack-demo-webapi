@@ -7,7 +7,7 @@ var http = require('http').createServer();
 var io = require('socket.io')(http);
 var port = 3000;
 // require('../_aux/io')(io);
-var SocketIOService_1 = __importDefault(require("./SocketIOService"));
+var SocketIOService_1 = __importDefault(require("./services/SocketIOService"));
 SocketIOService_1.default(io);
 http.listen(port, function () {
     console.log("Started on port " + port);

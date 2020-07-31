@@ -3,7 +3,7 @@ const io = require('socket.io')(http)
 const port = 3000
 
 // require('../_aux/io')(io);
-import SocketIOService from './SocketIOService'
+import SocketIOService from './services/SocketIOService'
 
 SocketIOService(io)
 
