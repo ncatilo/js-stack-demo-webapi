@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var app = require('http').createServer();
 var io = require('socket.io')(app);
 var port = 3000;
-// require('../_aux/io')(io);
 var SocketIOService_1 = __importDefault(require("./services/SocketIOService"));
 SocketIOService_1.default(io);
 app.listen(port, function () {
