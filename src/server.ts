@@ -1,15 +1,21 @@
-// import express from 'express'
-// import * as _http from 'http'
+import express from 'express'
+import * as _http from 'http'
+import socketIO from 'socket.io'
+import path from 'path'
 
-const app = require('express')()
-const http = require('http').createServer(app)
-const io = require('socket.io')(http)
+const app = express()
+const http = _http.createServer(app)
+const io = socketIO(http)
 const port = 3000
 
-app.get('/', (request: any, response: any) => {
-    
-    response.send('hello')
-})
+app.use(express.static(path.resolve('./public')));
+
+app.get('/', (request, response) => {
+
+    const file = path.resolve('./public/index.html')
+
+    response.sendFile(file);
+});
 
 import SocketIOService from './services/SocketIOService'
 

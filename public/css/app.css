@@ -1,0 +1,61 @@
+* {
+    font-family: "Segoe UI";
+    overflow:hidden;
+}
+
+ol {
+    counter-reset: section;
+    list-style-position: inside;
+}
+
+ol li {
+    overflow: auto;
+    background-color: #ddd;
+    padding:10px;
+    counter-increment: section;
+}
+
+ol li:before {
+    content: counter(section);
+    background-color: royalblue;
+    color:#fff;
+    display:inline-block;
+    width:25px;
+    height:25px;
+    margin-right:10px;
+    border-radius:25px;
+    text-align:center;
+}
+
+fieldset {
+    background-color: #ddd;
+    border: 0;
+}
+
+ul, ol {
+    margin: 0; padding:0;
+    list-style:none;
+}
+
+ul li {
+    padding:5px;
+}
+
+ul li > * {
+    float:left;
+}
+
+ul li span {
+    width:100px;
+}
+
+#message {
+    background-color: #ddd;
+    padding: 10px;
+    height:30px;
+    display: none;
+}
+
+#content {
+    display: none;
+}
