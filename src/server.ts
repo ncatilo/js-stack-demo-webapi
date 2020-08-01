@@ -1,4 +1,6 @@
-const app = require('http').createServer()
+// const app = require('http').createServer()
+import http from 'http'
+const app = http.createServer()
 const io = require('socket.io')(app)
 const port = 3000
 
