@@ -54,14 +54,17 @@ export const db: dbType = {
             throw new Error('Body/query for deletion must not be empty');
         };
 
-        const pingBack = await (await mongoClient).collection(collection)
+        if (query._id) {
+
+            query = { _id: ObjectID(query._id) }
+        }
+
+        const pingBack = await (await mongoClient).collection(collection).remove(query)
 
         if (pingBack.result && pingBack.result.n === 0) {
 
             throw new Error('Object to delete was not found');
         }
-
-        return pingBack
     },
 
     getMany: async (collection, query) => {

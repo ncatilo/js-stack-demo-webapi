@@ -1,44 +1,44 @@
-window.socketIO = (function() {
+window.socketIO = (function () {
 
-    var api     = "http://localhost:3000/";
-    var socket  = io(api);
+    var api = "http://localhost:3000/";
+    var socket = io(api);
 
     [{
         label: "connect",
-        func : function(api) {
+        func: function (api) {
 
             console.log('Connected to ' + api);
         }
     }, {
 
         label: "message-from-server",
-        func: function(msg) {
+        func: function (msg) {
 
             app.showMessage(msg);
         }
     }, {
 
         label: "joined-dept",
-        func: function(response) {
-    
+        func: function (response) {
+
             app.prependToJobsInbox(response);
         }
     }, {
 
         label: "api-posted",
-        func: function(response) {
+        func: function (response) {
 
             app.prependToJobsInbox(response);
         }
     }, {
 
         label: "job-processed",
-        func: function(response) {
+        func: function (response) {
 
-            var id          = response._id,
-                department  = $("#department").val();
+            var id = response._id;
+            var department = $("#department").val();
 
-            if(response.department === department) {
+            if (response.department === department) {
 
                 return app.prependToJobsInbox(response);
             }
@@ -47,20 +47,20 @@ window.socketIO = (function() {
         }
     }, {
         label: "error",
-        func: function(msg) {
+        func: function (msg) {
 
             alert(msg);
             console.log(msg);
         }
     }]
-    .forEach(function(item) {
+        .forEach(function (item) {
 
-        socket.on(item.label, item.func);
-    });
+            socket.on(item.label, item.func);
+        });
 
-    return  {
+    return {
 
-        send: function(label, data) {
+        send: function (label, data) {
 
             socket.emit(label, data);
         }
