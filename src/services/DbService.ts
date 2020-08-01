@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { ObjectID, MongoClient, Db } from 'mongodb'
+import { ObjectID, MongoClient } from 'mongodb'
 const mongoClient = MongoClient.connect('mongodb://localhost:27017/JsStackDemo')
 
 type dbType = {
