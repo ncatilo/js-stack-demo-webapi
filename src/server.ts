@@ -2,6 +2,7 @@ import express from 'express'
 import * as _http from 'http'
 import socketIO from 'socket.io'
 import path from 'path'
+import SocketIOService from './services/SocketIOService'
 
 const app = express()
 const http = _http.createServer(app)
@@ -16,8 +17,6 @@ app.get('/', (request, response) => {
 
     response.sendFile(file);
 });
-
-import SocketIOService from './services/SocketIOService'
 
 SocketIOService(io)
 

@@ -26,6 +26,7 @@ var express_1 = __importDefault(require("express"));
 var _http = __importStar(require("http"));
 var socket_io_1 = __importDefault(require("socket.io"));
 var path_1 = __importDefault(require("path"));
+var SocketIOService_1 = __importDefault(require("./services/SocketIOService"));
 var app = express_1.default();
 var http = _http.createServer(app);
 var io = socket_io_1.default(http);
@@ -35,7 +36,6 @@ app.get('/', function (request, response) {
     var file = path_1.default.resolve('./public/index.html');
     response.sendFile(file);
 });
-var SocketIOService_1 = __importDefault(require("./services/SocketIOService"));
 SocketIOService_1.default(io);
 http.listen(port, function () {
     console.log("Started on port " + port);
