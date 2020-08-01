@@ -45,15 +45,10 @@ export default function (ioServer: SocketIO.Server) {
 
             const { department } = body;
 
-            const jobSequence: { [key: string]: string }[] = [
-
-                { "sales": "creative" },
-                { "creative": "production" },
-                { "production": "logistics" }
-            ]
+            const jobSequence = ['sales', 'creative', 'production', 'logistics']
 
             // if department is the last item in the sequence...
-            if (Object.values(jobSequence[jobSequence.length - 1])[0] === department) {
+            if (jobSequence[jobSequence.length - 1] === department) {
 
                 await db.delete(collection, { _id })
 
@@ -62,13 +57,13 @@ export default function (ioServer: SocketIO.Server) {
 
             if (department) {
 
+                const idx = jobSequence.indexOf(department)
 
-                const nextDept = jobSequence.filter(x => x[department])[0];
+                if (idx < 0) throw new Error('Department is unknown')
 
-                if (nextDept) {
+                const nextDept = jobSequence[idx + 1]
 
-                    body.department = nextDept[department];
-                }
+                body.department = nextDept
             }
 
             const pingback: any = await db.upsert(collection, body, _id)
