@@ -1,7 +1,7 @@
 window.socketIO = (function() {
 
-    var api     = "http://localhost:3000/",
-        socket  = io(api);
+    var api     = "http://localhost:3000/";
+    var socket  = io(api);
 
     [{
         label: "connect",
