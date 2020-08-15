@@ -28,9 +28,10 @@
 // // Run an aggregation to view total sales for each product in 2014.
 // const aggregation = [
 //   { $match: { date: { $gte: new Date('2014-01-01'), $lt: new Date('2015-01-01') } } },
-//   { $group: { _id : '$item', totalSaleAmount: { $sum: { $multiply: [ '$price', '$quantity' ] } } } }
+//   { $group: { _id : '$item', totalSaleAm ount: { $sum: { $multiply: [ '$price', '$quantity' ] } } } }
 // ];
 // db.sales.aggregate(aggregation);
 use('JsStackDemo')
 
-db.jobs.drop()
+// db.jobs.drop()
+db.jobs.find()

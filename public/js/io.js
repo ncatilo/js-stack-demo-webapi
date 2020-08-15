@@ -4,36 +4,31 @@ window.socketIO = (function () {
     var socket = io(api);
 
     [{
-        label: "connect",
-        func: function (api) {
+        "connect": function (api) {
 
             console.log('Connected to ' + api);
         }
     }, {
 
-        label: "message-from-server",
-        func: function (msg) {
+        "message-from-server": function (msg) {
 
             app.showMessage(msg);
         }
     }, {
 
-        label: "joined-dept",
-        func: function (response) {
+        "joined-dept": function (response) {
 
             app.prependToJobsInbox(response);
         }
     }, {
 
-        label: "api-posted",
-        func: function (response) {
+        "api-posted": function (response) {
 
             app.prependToJobsInbox(response);
         }
     }, {
 
-        label: "job-processed",
-        func: function (response) {
+        "job-processed": function (response) {
 
             var id = response._id;
             var department = $("#department").val();
@@ -46,17 +41,18 @@ window.socketIO = (function () {
             app.removeFromJobsInbox(id);
         }
     }, {
-        label: "error",
-        func: function (msg) {
+        "error": function (msg) {
 
             alert(msg);
             console.log(msg);
         }
-    }]
-        .forEach(function (item) {
 
-            socket.on(item.label, item.func);
-        });
+    }].forEach(function (item) {
+
+        item = Object.entries(item)[0]
+
+        socket.on(item[0], item[1]);
+    });
 
     return {
 
