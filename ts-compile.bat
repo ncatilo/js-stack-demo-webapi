@@ -1,1 +1,1 @@
-tsc -p . --watch
+tsc -w

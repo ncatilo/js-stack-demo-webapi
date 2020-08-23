@@ -1,6 +1,12 @@
 import _ from 'lodash'
-import { ObjectID, MongoClient } from 'mongodb'
-const mongoClient = MongoClient.connect('mongodb://localhost:27017/JsStackDemo')
+import { ObjectID, MongoClient, Db } from 'mongodb'
+
+let _db: Db
+
+MongoClient.connect('mongodb://localhost:27017', (err, connection) => {
+
+    _db = connection.db('JsStackDemo')
+})
 
 type dbType = {
 
@@ -31,19 +37,19 @@ export const db: dbType = {
             throw new Error('ObjectID is of incorrect format/type');
         }
 
-        const pingBack = await (<any>(await mongoClient)).collection(collection).findOneAndUpdate(
+        const { lastErrorObject, value } = await _db.collection(collection).findOneAndUpdate(
 
             { _id: id },
             { $set: body },
             { upsert: true, returnOriginal: false }
         )
 
-        if (pingBack.lastErrorObject && pingBack.lastErrorObject.n === 0) {
+        if (lastErrorObject && lastErrorObject.n === 0) {
 
             throw new Error("nothing was updated");
         }
 
-        return pingBack.value
+        return value
     },
 
     delete: async (collection, query) => {
@@ -58,9 +64,9 @@ export const db: dbType = {
             query = { _id: new ObjectID(query._id) }
         }
 
-        const pingBack = await (<any>(await mongoClient)).collection(collection).remove(query)
+        const { result } = await _db.collection(collection).remove(query)
 
-        if (pingBack.result && pingBack.result.n === 0) {
+        if (result && result.n === 0) {
 
             throw new Error('Object to delete was not found');
         }
@@ -68,7 +74,7 @@ export const db: dbType = {
 
     getMany: async (collection, query) => {
 
-        const pingback = await (<any>(await mongoClient)).collection(collection).find(query).toArray()
+        const pingback = await _db.collection(collection).find(query).toArray()
 
         return pingback
     },
@@ -82,7 +88,7 @@ export const db: dbType = {
 
         var query = { _id: new ObjectID(id) };
 
-        const result = (<any>await (await mongoClient)).collection(collection).findOne(query)
+        const result = await _db.collection(collection).findOne(query)
 
         if (!result) {
 
