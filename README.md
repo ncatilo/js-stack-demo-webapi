@@ -14,7 +14,15 @@
     
     For Windows, run the same command lines above without the keyword, `sudo`
     
-2.  Install **mongodb** from https://www.mongodb.com and run it in the background from the terminal.
+2.  Install **mongodb**:
+
+In Docker:
+
+```
+docker run --name mongo-db -d mongo -p 27017:27017
+```
+
+Or from https://www.mongodb.com and run it in the background from the terminal.
     
     As an option, specify to parameter, **--dbpath** the desired local disk path where you wish the data files to be stored on your machine.
 

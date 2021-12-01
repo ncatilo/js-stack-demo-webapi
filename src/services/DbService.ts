@@ -5,6 +5,11 @@ let _db: Db
 
 MongoClient.connect('mongodb://localhost:27017', (err, connection) => {
 
+    if (err) {
+
+        throw new Error(err.message)
+    }
+
     _db = connection.db('JsStackDemo')
 })
 

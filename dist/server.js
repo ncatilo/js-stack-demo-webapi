@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -27,16 +27,16 @@ var _http = __importStar(require("http"));
 var socket_io_1 = __importDefault(require("socket.io"));
 var path_1 = __importDefault(require("path"));
 var SocketIOService_1 = __importDefault(require("./services/SocketIOService"));
-var app = express_1.default();
+var app = (0, express_1.default)();
 var http = _http.createServer(app);
-var io = socket_io_1.default(http);
+var io = (0, socket_io_1.default)(http);
 var port = 3000;
 app.use(express_1.default.static(path_1.default.resolve('./public')));
 app.get('/', function (request, response) {
     var file = path_1.default.resolve('./public/index.html');
     response.sendFile(file);
 });
-SocketIOService_1.default(io);
+(0, SocketIOService_1.default)(io);
 http.listen(port, function () {
     console.log("Started on port " + port);
 });
