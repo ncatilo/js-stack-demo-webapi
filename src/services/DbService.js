@@ -13,17 +13,6 @@ MongoClient.connect('mongodb://localhost:27017', (err, connection) => {
     _db = connection.db('JsStackDemo')
 })
 
-// const dbType = {
-
-//     upsert: (collection: string, body: any, id?: any) => {},
-
-//     delete: (collection: string, query: any) => {},
-
-//     getMany: (collection: string, query: any) => {},
-
-//     getOne: (collection: string, id: any) => {}
-// }
-
 module.exports = {
 
     upsert: async (collection, body, id) => {
