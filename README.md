@@ -16,7 +16,7 @@
     
 2.  Install **mongodb**:
 
-In Docker:
+In Docker, install:
 
 ```
 docker run --name mongo-db -d mongo -p 27017:27017
@@ -35,15 +35,15 @@ Or from https://www.mongodb.com and run it in the background from the terminal.
 3. Execute the following terminal commands
 
     ```
-    sudo npm install nodemon -g
-    sudo npm install
-    sudo npm test
-    sudo nodemon server.js
+    sudo npm i typescript -g
+    sudo tsc -w
     ```
+
+    These will install typescript globally onto your machine and auto-compile your .ts files into /dist/*.js files at every change
     
     For Windows, run the same command lines above without the keyword, `sudo`
 
-    All tests should have passed with green check marks and the API could now be launched at http://localhost:3000/api
+4. Press F5 on Windows or Play button on Mac to launch http://localhost:3000 in debug mode.
 
 ## Useful development tools to download and install
 

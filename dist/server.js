@@ -38,6 +38,6 @@ app.get('/', function (request, response) {
 });
 (0, SocketIOService_1.default)(io);
 http.listen(port, function () {
-    console.log("Started on port " + port);
+    console.log("Started on port ".concat(port));
 });
 //# sourceMappingURL=server.js.map
