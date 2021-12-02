@@ -32,18 +32,7 @@ Or from https://www.mongodb.com and run it in the background from the terminal.
     "C:\Program Files\MongoDB\Server\3.4\bin\mongod.exe" --dbpath "C:\mongo-data"
     ```
 
-3. Execute the following terminal commands
-
-    ```
-    sudo npm install nodemon -g
-    sudo npm install
-    sudo npm test
-    sudo nodemon server.js
-    ```
-    
-    For Windows, run the same command lines above without the keyword, `sudo`
-
-    All tests should have passed with green check marks and the API could now be launched at http://localhost:3000/api
+3. In Visual Studio Code, press F5 on Windows or Play button on Mac to launch the build under http://localhost:3000 in debug mode.
 
 ## Useful development tools to download and install
 
