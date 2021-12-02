@@ -29,7 +29,7 @@ Or download the installer from https://www.mongodb.com and run it in the backgro
     e.g. Windows cmd line below
 
     ```
-    "C:\Program Files\MongoDB\Server\3.4\bin\mongod.exe" --dbpath "C:\mongo-data"
+    "C:\Program Files\MongoDB\Server\3.*\bin\mongod.exe" --dbpath "C:\mongo-data"
     ```
 
 3. Execute the following terminal commands
