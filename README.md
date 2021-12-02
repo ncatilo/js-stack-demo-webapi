@@ -43,7 +43,7 @@ Or download the installer from https://www.mongodb.com and run it in the backgro
     
     For Windows, run the same command lines above without the keyword, `sudo`
 
-4. In Visual Studio Code, press F5 on Windows or Play button on Mac to launch http://localhost:3000 in debug mode.
+4. In Visual Studio Code, press F5 on Windows or Play button on Mac to launch the build under http://localhost:3000 in debug mode.
 
 ## Useful development tools to download and install
 
