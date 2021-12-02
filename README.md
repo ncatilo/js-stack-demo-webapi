@@ -16,7 +16,7 @@
     
 2.  Install **mongodb**:
 
-In Docker, install:
+For Docker, install via Terminal:
 
 ```
 docker run --name mongo-db -d mongo -p 27017:27017
