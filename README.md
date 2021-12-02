@@ -39,7 +39,7 @@ Or download the installer from https://www.mongodb.com and run it in the backgro
     sudo tsc -w
     ```
 
-    These will install typescript globally onto your machine and auto-compile your .ts files into /dist/*.js files at every change
+    These will install typescript globally onto your machine and auto-compile your .ts files into /dist/*.js files at every change in the code
     
     For Windows, run the same command lines above without the keyword, `sudo`
 
